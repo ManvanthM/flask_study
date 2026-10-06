@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Home</title>
+</head>
+
+<body>
+    <h1>Welcome {{name|upper}}</h1>
+    <p>This is a simple web page created using Flask</p>
+    <h2>Course List</h2>
+
+    {% for course in courses %}
+    {{loop.index0}}&nbsp;&nbsp;{{ course | upper}}<br>
+    {% endfor %}
+
+    <hr>
+    <br>
+    {%for key,value in student.items() %}
+    {{key}}:{{value}}<br>
+    {% endfor %}
+
+    <h2>City</h2>
+    <p>{{city}}</p>
+    <h3>Price without GST:{{price}}</h3>
+    <h3>Price with GST:{{price*1.18}}</h3>
+</body>
+
+</html>
