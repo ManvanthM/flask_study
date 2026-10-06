@@ -10,14 +10,23 @@ def home():
 def users():
     return "This is users page"
 
-@app.route("/user/<username>")
-def profile(username):
-    return f"This is {username} profile page"
+@app.route("/user/<int:id>")
+def profile(id):
+    return f"This is {id} profile page"
 
-@app.route("/student/<name>/<course>")
-def student(name,course):
-    return f"The student {name} is studying {course}"
-    
+@app.route("/price/<float:amount>")
+def price(amount):
+    return f"Rupees {amount}"
+
+@app.route("/string/<string:name>")
+def name(name):
+    return f"My name is {name}"
+
+@app.route("/file/<path:file_path>")
+def files(file_path):
+    return f"This is {file_path} file path"
+
+
 if __name__ == '__main__':
     app.run(debug=True)
     
