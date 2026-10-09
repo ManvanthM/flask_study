@@ -1,10 +1,13 @@
 from flask import Flask, request, render_template, redirect, url_for, flash, session
 import os
 from werkzeug.utils import secure_filename
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
 
-app.secret_key = 'change-this-in-production'
+app.secret_key = os.getenv("SECRET_KEY")
 
 UPLOAD_FOLDER = 'uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
