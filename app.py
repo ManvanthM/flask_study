@@ -1,8 +1,24 @@
-from flask import Flask, request , render_template, redirect, url_for,flash
+from flask import Flask, request , render_template, redirect, url_for,flash,session
 
 app = Flask(__name__)
 
 app.secret_key = 'change-this-in-production'
+
+@app.route("/login")
+def login():
+    session["username"]="Manvanth"
+    return "Login successful"    
+@app.route("/dashboard")
+def dashboard():
+    username=session.get("username")
+    if not username:
+        return "Please Login to access dashboard"
+    return f"hello {username} , your are in dashboard"
+
+@app.route("/logout")
+def logout():
+    session.pop("username",None)
+    return "Logged out successfully"
 
 @app.route('/')
 def home():
