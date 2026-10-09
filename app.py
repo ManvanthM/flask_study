@@ -1,8 +1,40 @@
-from flask import Flask, request , render_template, redirect, url_for,flash,session
+from flask import Flask, request, render_template, redirect, url_for, flash, session
+import os
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
 app.secret_key = 'change-this-in-production'
+
+UPLOAD_FOLDER = 'uploads'
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+@app.route('/upload', methods=['GET', 'POST'])
+@app.route('/uplode', methods=['GET', 'POST'])
+def upload():
+    if request.method == 'POST':
+        # 1. Check if the file part is in the request
+        if 'file' not in request.files:
+            flash('No file part', 'danger')
+            return redirect(request.url)
+            
+        file = request.files['file']
+        
+        # 2. Check if the user didn't select a file
+        if file.filename == '':
+            flash('No selected file', 'danger')
+            return redirect(request.url)
+            
+        if file:
+            # 3. Secure the filename to prevent directory traversal attacks
+            filename = secure_filename(file.filename)
+            
+            # 4. Save the file safely
+            file.save(os.path.join(UPLOAD_FOLDER, filename))
+            flash('File uploaded successfully', 'success')
+            return redirect(url_for('upload'))
+            
+    return render_template('upload.html')
 
 @app.errorhandler(404)
 def page_not_found(error):
@@ -11,12 +43,6 @@ def page_not_found(error):
 @app.errorhandler(500)
 def internal_server_error(error):
     return render_template("500.html"), 500
-
-@app.route('/test-500')
-def test_500():
-    result=1/0 
-    return str(result)  
-
 
 @app.route("/login")
 def login():
